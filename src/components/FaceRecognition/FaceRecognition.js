@@ -8,7 +8,7 @@ const FaceRecognition = ({imageUrl, box}) => {
                 <img id = 'inputImage' alt = '' src = {imageUrl} width='500px' height = 'auto'/>
                 <div className = 'bouncing-box' style = {{top : box.topRow, right: box.rightCol, bottom: box.bottomRow, left: box.leftCol}}></div>
             </div>
-        </div>
+        </div>  
     )
 }
 
