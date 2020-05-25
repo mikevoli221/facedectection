@@ -24,7 +24,7 @@ class SignIn extends React.Component{
         const signInUser = {
             email : this.state.signInEmail,
             password : this.state.signInPassword
-        };    
+        };   
 
         fetch('http://localhost:3000/signin',{
             method : 'POST',
