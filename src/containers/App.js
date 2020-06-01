@@ -90,7 +90,21 @@ loadUser = (data) => {
     this.setState({imageUrl : this.state.input});
 
     app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
-    .then(response => this.displayFacebox(this.calculateFaceLocation(response)))
+    .then(response => {
+      if (response){
+        fetch(`http://localhost:3000/score/${this.state.user.email}`, {
+            method : 'PUT',
+            headers : {'Content-Type' : 'application/json'}
+        })
+        .then (response => response.json())
+        .then (user => {
+            if (user.id){
+                this.loadUser(user);
+            };
+        });
+      }
+      this.displayFacebox(this.calculateFaceLocation(response))
+    })
     .catch(err => console.log(err));
   }
 
@@ -106,7 +120,7 @@ loadUser = (data) => {
   }
 
   render(){
-    const {isSignedIn, imageUrl, box } = this.state;
+    const {isSignedIn, imageUrl, box} = this.state;
     return (
       <div className="App">
         
