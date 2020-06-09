@@ -110,8 +110,7 @@ loadUser = (data) => {
 
   onRouteChange = (route) => {
     if (route === 'signout'){
-       this.setState({isSignedIn : false})
-       
+       this.setState({isSignedIn : false}) 
     }else if (route === 'home'){
       this.setState({isSignedIn : true})
     }
