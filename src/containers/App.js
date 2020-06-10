@@ -92,7 +92,7 @@ loadUser = (data) => {
     app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
     .then(response => {
       if (response){
-        fetch(`http://localhost:3000/score/${this.state.user.email}`, {
+        fetch(`http://localhost:3000/score/${this.state.user.email}/${this.state.user.entries}`, {
             method : 'PUT',
             headers : {'Content-Type' : 'application/json'}
         })
