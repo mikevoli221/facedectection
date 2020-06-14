@@ -26,26 +26,27 @@ const particlesOptions = {
 const app = new Clarifai.App({
   apiKey: '953f4833c2c54483a912bed1b841bde5'
 });
- 
+
+const initialState = {
+  input : '',
+  imageUrl : '',
+  box : {},
+  route : 'signin',
+  isSignedIn : false,
+  user : {
+    id : '',
+    name : '',
+    email : '',
+    entries : 0,
+    joined : ''
+  }
+}
 
 class App extends React.Component {
 
   constructor(){
     super();
-    this.state = {
-      input : '',
-      imageUrl : '',
-      box : {},
-      route : 'signin',
-      isSignedIn : false,
-      user : {
-        id : '',
-        name : '',
-        email : '',
-        entries : 0,
-        joined : ''
-      }
-    }
+    this.state = initialState;
   }
 
 loadUser = (data) => {
@@ -92,7 +93,7 @@ loadUser = (data) => {
     app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
     .then(response => {
       if (response){
-        fetch(`http://localhost:3000/score/${this.state.user.email}/${this.state.user.entries}`, {
+        fetch(`http://localhost:3000/score/${this.state.user.email}`, {
             method : 'PUT',
             headers : {'Content-Type' : 'application/json'}
         })
@@ -101,7 +102,8 @@ loadUser = (data) => {
             if (user.id){
                 this.loadUser(user);
             };
-        });
+        })
+        .catch(err => console.log(err));
       }
       this.displayFacebox(this.calculateFaceLocation(response))
     })
@@ -110,11 +112,10 @@ loadUser = (data) => {
 
   onRouteChange = (route) => {
     if (route === 'signout'){
-       this.setState({isSignedIn : false}) 
+       this.setState(initialState) 
     }else if (route === 'home'){
       this.setState({isSignedIn : true})
     }
-
     this.setState({route : route});
   }
 
