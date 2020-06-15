@@ -9,7 +9,6 @@ import Register from '../components/Register/Register';
 import Rank from '../components/Rank/Rank';
 import 'tachyons';
 import Particles from 'react-particles-js';
-import Clarifai from 'clarifai';
 
 const particlesOptions = {
   particles: {
@@ -22,10 +21,6 @@ const particlesOptions = {
     }
   }
 }
-
-const app = new Clarifai.App({
-  apiKey: '953f4833c2c54483a912bed1b841bde5'
-});
 
 const initialState = {
   input : '',
@@ -88,16 +83,23 @@ loadUser = (data) => {
 
   onButtonClick = (event) => {
     //console.log('button clicked')
-    this.setState({imageUrl : this.state.input});
+    const imageUrl = {imageUrl : this.state.input};
+    
+    this.setState(imageUrl);
 
-    app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
-    .then(response => {
-      if (response){
+    fetch('http://localhost:3000/callClarifaiAPI', {
+        method : 'POST',
+        headers : {'Content-Type' : 'application/json'},
+        body : JSON.stringify(imageUrl)
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data){
         fetch(`http://localhost:3000/score/${this.state.user.email}`, {
             method : 'PUT',
             headers : {'Content-Type' : 'application/json'}
         })
-        .then (response => response.json())
+        .then (resp => resp.json())
         .then (user => {
             if (user.id){
                 this.loadUser(user);
@@ -105,7 +107,7 @@ loadUser = (data) => {
         })
         .catch(err => console.log(err));
       }
-      this.displayFacebox(this.calculateFaceLocation(response))
+      this.displayFacebox(this.calculateFaceLocation(data))
     })
     .catch(err => console.log(err));
   }
