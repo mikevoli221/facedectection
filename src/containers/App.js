@@ -87,7 +87,8 @@ loadUser = (data) => {
     
     this.setState(imageUrl);
 
-    fetch('http://localhost:3000/callClarifaiAPI', {
+    fetch('https://polar-lake-80701.herokuapp.com/callClarifaiAPI', {
+    //fetch('http://localhost:3000/callClarifaiAPI', {
         method : 'POST',
         headers : {'Content-Type' : 'application/json'},
         body : JSON.stringify(imageUrl)
@@ -95,7 +96,8 @@ loadUser = (data) => {
     .then(response => response.json())
     .then(data => {
       if (data){
-        fetch(`http://localhost:3000/score/${this.state.user.email}`, {
+        fetch(`https://polar-lake-80701.herokuapp.com/score/${this.state.user.email}`, {
+        //fetch(`http://localhost:3000/score/${this.state.user.email}`, {
             method : 'PUT',
             headers : {'Content-Type' : 'application/json'}
         })

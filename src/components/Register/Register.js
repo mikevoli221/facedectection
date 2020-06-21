@@ -30,7 +30,7 @@ class Register extends React.Component{
         };
         //console.log(newUser);
 
-        fetch('http://localhost:3000/register',{
+        fetch('https://polar-lake-80701.herokuapp.com/register',{
             method : 'POST',
             headers : {'Content-Type' : 'application/json'},
             body : JSON.stringify(newUser)
